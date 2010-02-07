@@ -1,176 +1,192 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 
 namespace DirectorySizeCounter
 {
-    class Program
-    {
-        static int readonlyFiles = 0;
-        static void Main(string[] args)
-        {
-            if (args.Length == 0 || args.Length > 3)
-            {
-                Console.WriteLine("Usage:  DirectorySizeSummary <directory> [/filetype /showreadonly]");
-                Console.WriteLine("    /filetype      -  Show by file type instead of directory");
-                Console.WriteLine("    /showreadonly  -  Shows the number of files that are readonly");
-                return;
-            }
+	internal class Program
+	{
+		private const uint maximumItemsToDisplay = 10;
+		private static int readOnlyFileCount;
 
-            int c = 10;
-            string dir = args[0];
-            string[] dirs = Directory.GetDirectories(dir);
-            SortedDictionary<uint, List<string>> subDirSizes = new SortedDictionary<uint, List<string>>(new DescendingComparer<uint>());
-            Dictionary<string, uint> categorySizes = new Dictionary<string, uint>();
+		private static void Main(string[] arguments)
+		{
+			if (arguments.Length == 0 || arguments.Length > 3)
+			{
+				ShowUsage();
+				return;
+			}
 
-            bool fileType = false;
+			var baseDirectory = arguments[0];
+			var calculationMode = DetermineCalcuationMode(arguments);
+			var shouldDisplayReadOnlyFileCountInSummary = ShouldReadOnlyFileCountBeDisplayedInSummary(arguments);
+			var sizes = CalculateSizes(calculationMode, baseDirectory);
+			DisplaySizes(sizes);
 
-            foreach (string arg in args)
-            {
-                if (arg == "/filetype")
-                    fileType = true;
-            }
+			if (shouldDisplayReadOnlyFileCountInSummary)
+			{
+				DisplayReadOnlyFileCount();
+			}				
+		}
 
-            bool showRO = false;
-            foreach (string arg in args)
-            {
-                if (arg == "/showreadonly")
-                    showRO = true;
-            }
+		private static void ShowUsage()
+		{
+			Console.WriteLine("Usage:  SizeInformationSummary <directory> [/filetype /showreadonly]");
+			Console.WriteLine("    /filetype      -  Show by file type instead of directory");
+			Console.WriteLine("    /showreadonly  -  Shows the number of files that are readonly");
+		}
 
-            if (!fileType)
-            {
-                foreach (string subDir in dirs)
-                {
-                    uint dirSize = GetDirSize(subDir);
-                    if (!subDirSizes.ContainsKey(dirSize))
-                    {
-                        subDirSizes[dirSize] = new List<string>();
-                    }
+		private static void DisplayReadOnlyFileCount()
+		{
+			Console.WriteLine(string.Format("Total readonly files {0}", readOnlyFileCount));
+		}
 
-                    subDirSizes[dirSize].Add(subDir);
-                }
+		private static bool ShouldReadOnlyFileCountBeDisplayedInSummary(IEnumerable<string> arguments)
+		{
+			foreach (var argument in arguments)
+			{
+				if (argument == "/showreadonly")
+					return true;
+			}
 
-                int i = 0;
-                foreach (uint size in subDirSizes.Keys)
-                {
-                    foreach (string subDir in subDirSizes[size])
-                    {
-                        ++i;
-                        string output = string.Format("{0} - {1}", subDir, size);
-                        Console.WriteLine(output);
+			return false;
+		}
 
-                        if (i == c)
-                            break;
-                    }
+		private static CalculationMode DetermineCalcuationMode(IEnumerable<string> consoleArguments)
+		{
+			foreach (var consoleArgument in consoleArguments)
+			{
+				if (consoleArgument == "/filetype")
+					return CalculationMode.ByFileType;
+			}
 
-                    if (i == c)
-                        break;
-                }
+			return CalculationMode.ByDirectorySize;
+		}
 
-                if (showRO)
-                {
-                    Console.WriteLine(string.Format("Total readonly files {0}", readonlyFiles));
-                }
-            }
-            else
-            {
-                foreach (string subDir in dirs)
-                {
-                    GetDirSizeByCategory(subDir, categorySizes);
-                }
+		private static void DisplaySizes(IEnumerable<SizeInformation> sizes)
+		{
+			var enumerator = sizes.GetEnumerator();
+			var itemsDisplayed = 0;
+			while (enumerator.MoveNext() && itemsDisplayed < maximumItemsToDisplay)
+			{
+				Console.WriteLine(string.Format("{0} - {1}", enumerator.Current.Item, enumerator.Current.Size));
+				itemsDisplayed++;
+			}
+		}
 
-                SortedDictionary<uint, List<string>> topCats = new SortedDictionary<uint, List<string>>(new DescendingComparer<uint>());
-                foreach (KeyValuePair<string, uint> kvp in categorySizes)
-                {
-                    if (!topCats.ContainsKey(kvp.Value))
-                    {
-                        topCats[kvp.Value] = new List<string>();
-                    }
+		private static IEnumerable<SizeInformation> CalculateSizes(CalculationMode calculationMode, string baseDirectory)
+		{
+			return calculationMode == CalculationMode.ByDirectorySize ?
+				CalculateSizesBySizeInformation(baseDirectory) :
+				CalculateSizesByFileCategory(baseDirectory);
+		}
 
-                    topCats[kvp.Value].Add(kvp.Key);
-                }
+		private static IEnumerable<SizeInformation> CalculateSizesByFileCategory(string baseDirectory)
+		{
+			var categorySizes = new Dictionary<string, uint>();
+			var directoriesToAnalyze = new List<string> { baseDirectory };
+			directoriesToAnalyze.AddRange(Directory.GetDirectories(baseDirectory));
 
-                int i = 0;
-                foreach (uint size in topCats.Keys)
-                {
-                    foreach (string category in topCats[size])
-                    {
-                        ++i;
-                        string output = string.Format("{0} - {1}", category, size);
-                        Console.WriteLine(output);
+			foreach (var subDirectory in directoriesToAnalyze)
+			{
+				GetSizeInformationByFileCategory(subDirectory, categorySizes);
+			}
 
-                        if (i == c)
-                            break;
-                    }
+			var sortedFileCategorySizes = SortFileCategorySizes(categorySizes);
 
-                    if (i == c)
-                        break;
-                }
+			return ExtractSizesFromSortedSizeData(sortedFileCategorySizes);
+		}
 
-                if (showRO)
-                {
-                    Console.WriteLine(string.Format("Total readonly files {0}", readonlyFiles));
-                }
-            }
-        }
+		private static SortedDictionary<uint, List<string>> SortFileCategorySizes(Dictionary<string, uint> categorySizes)
+		{
+			var sortedFileCategorySizes = new SortedDictionary<uint, List<string>>(new DescendingComparer<uint>());
+			foreach (var keyValuePair in categorySizes)
+			{
+				if (!sortedFileCategorySizes.ContainsKey(keyValuePair.Value))
+				{
+					sortedFileCategorySizes[keyValuePair.Value] = new List<string>();
+				}
 
-        static private void GetDirSizeByCategory(string dir, Dictionary<string, uint> sizes)
-        {
-            foreach (string subDir in Directory.GetDirectories(dir))
-            {
-                GetDirSizeByCategory(subDir, sizes);
-            }
+				sortedFileCategorySizes[keyValuePair.Value].Add(keyValuePair.Key);
+			}
 
-            foreach (string file in Directory.GetFiles(dir))
-            {
-                FileInfo fi = new FileInfo(file);
-                if (fi.IsReadOnly)
-                {
-                    readonlyFiles++;
-                }
+			return sortedFileCategorySizes;
+		}
 
-                if (!sizes.ContainsKey(fi.Extension))
-                {
-                    sizes[fi.Extension] = 0;
-                }
+		private static IEnumerable<SizeInformation> CalculateSizesBySizeInformation(string baseDirectory)
+		{
+			var directoriesToAnalyze = Directory.GetDirectories(baseDirectory);
+			var subSizeInformations = new SortedDictionary<uint, List<string>>(new DescendingComparer<uint>());
+			foreach (var subDirectory in directoriesToAnalyze)
+			{
+				var directorySize = GetDirectorySize(subDirectory);
+				if (!subSizeInformations.ContainsKey(directorySize))
+				{
+					subSizeInformations[directorySize] = new List<string>();
+				}
 
-                sizes[fi.Extension] += (uint) fi.Length;
-            }
-        }
+				subSizeInformations[directorySize].Add(subDirectory);
+			}
 
-        static private uint GetDirSize(string dir)
-        {
-            uint size = 0;
+			return ExtractSizesFromSortedSizeData(subSizeInformations);
+		}
 
-            foreach (string subDir in Directory.GetDirectories(dir))
-            {
-                size += GetDirSize(subDir);
-            }
+		private static IEnumerable<SizeInformation> ExtractSizesFromSortedSizeData(SortedDictionary<uint, List<string>> sortedSizeData)
+		{
+			foreach (var size in sortedSizeData.Keys)
+			{
+				foreach (var subDirectory in sortedSizeData[size])
+				{
+					yield return new SizeInformation(subDirectory, size);
+				}
+			}
+		}
 
-            foreach (string file in Directory.GetFiles(dir))
-            {
-                FileInfo fi = new FileInfo(file);
-                if (fi.IsReadOnly)
-                {
-                    readonlyFiles++;
-                }
+		private static void GetSizeInformationByFileCategory(string directory, IDictionary<string, uint> sizes)
+		{
+			foreach (var subDirectory in Directory.GetDirectories(directory))
+			{
+				GetSizeInformationByFileCategory(subDirectory, sizes);
+			}
 
-                size += (uint) fi.Length;
-            }
+			foreach (var file in Directory.GetFiles(directory))
+			{
+				var fileInfo = new FileInfo(file);
+				if (fileInfo.IsReadOnly)
+				{
+					readOnlyFileCount++;
+				}
 
-            return size;
-        }
-    }
+				if (!sizes.ContainsKey(fileInfo.Extension))
+				{
+					sizes[fileInfo.Extension] = 0;
+				}
 
-    class DescendingComparer<T> : IComparer<T> where T : IComparable<T>
-    {
-        public int Compare(T x, T y)
-        {
-            return y.CompareTo(x);
-        }
-    }
+				sizes[fileInfo.Extension] += (uint) fileInfo.Length;
+			}
+		}
+
+		private static uint GetDirectorySize(string directory)
+		{
+			uint size = 0;
+
+			foreach (var subDir in Directory.GetDirectories(directory))
+			{
+				size += GetDirectorySize(subDir);
+			}
+
+			foreach (var file in Directory.GetFiles(directory))
+			{
+				var fileInfo = new FileInfo(file);
+				if (fileInfo.IsReadOnly)
+				{
+					readOnlyFileCount++;
+				}
+
+				size += (uint) fileInfo.Length;
+			}
+
+			return size;
+		}
+	}
 }
