@@ -1,8 +1,8 @@
 ﻿namespace DirectorySizeCounter
 {
-    internal enum CalculationMode
-    {
-        ByDirectorySize,
-        ByFileType
-    }
+	internal enum CalculationMode
+	{
+		ByDirectorySize,
+		ByFileType
+	}
 }
