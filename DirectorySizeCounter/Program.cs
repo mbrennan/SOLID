@@ -27,8 +27,9 @@ namespace DirectorySizeCounter
 			var summarizer = CreateSummarizerFromArguments(arguments);
 			displayer.ShowStatusMessage(calculator);
 			var calculationResult = summarizer != null ?
-			                                           	calculator.CalculateSizes(baseDirectory, summarizer) :
-			                                           	                                                     	calculator.CalculateSizes(baseDirectory);
+                calculator.CalculateSizes(baseDirectory, summarizer) :
+			    calculator.CalculateSizes(baseDirectory);
+
 			displayer.DisplaySizes(calculationResult.Sizes);
 
 			if (summarizer != null)
