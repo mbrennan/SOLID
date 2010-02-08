@@ -25,14 +25,7 @@ namespace DirectorySizeCounter
 
 		public void ShowStatusMessage(ISizeCalculator calculator)
 		{
-			if (calculator is DirectorySizeCalculator)
-			{
-				Console.WriteLine("Calcuating directory sizes...");
-			}
-			else if (calculator is FileCategorySizeCalculator)
-			{
-				Console.WriteLine("Calculating sizes by file category...");
-			}
+			Console.WriteLine(calculator.StatusMessage);
 		}
 	}
 }

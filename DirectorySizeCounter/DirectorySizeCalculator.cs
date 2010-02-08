@@ -7,7 +7,16 @@ namespace DirectorySizeCounter
 	internal class DirectorySizeCalculator : SizeCalculator
 	{
 		public const string CommandLineIdentifier = "directorysize";
+		private const string statusMessage = "calculating directory sizes...";
 		private const string Description = "calculate by directory size";
+
+		public override string StatusMessage
+		{
+			get
+			{
+				return statusMessage;
+			}
+		}
 
 		protected override IEnumerable<SizeResult> GetSizes(string baseDirectory, ISummarizer summarizer)
 		{

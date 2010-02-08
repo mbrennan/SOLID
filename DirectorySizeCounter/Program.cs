@@ -6,7 +6,7 @@ using System.Text;
 
 namespace DirectorySizeCounter
 {
-	internal class Program
+	internal static class Program
 	{
 		private const string calculatorSwitch = "/calculator:";
 		private const string summarizerSwitch = "/summarizer:";
