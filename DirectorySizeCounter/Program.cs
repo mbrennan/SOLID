@@ -1,10 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
+using System.Text;
 
 namespace DirectorySizeCounter
 {
 	internal class Program
 	{
+		private const string calculatorSwitch = "/calculator:";
+		private const string summarizerSwitch = "/summarizer:";
+		private const string defaultCalculator = DirectorySizeCalculator.CommandLineIdentifier;
+		private const string defaultSummarizer = null; // no default summarizer type
+		private static readonly ConsoleDisplayer displayer = new ConsoleDisplayer();
+
 		private static void Main(string[] arguments)
 		{
 			if (arguments.Length == 0 || arguments.Length > 3)
@@ -13,43 +22,101 @@ namespace DirectorySizeCounter
 				return;
 			}
 
-			var baseDirectory = arguments[0];
-			var calculationMode = DetermineCalcuationMode(arguments);
-			var shouldDisplayReadOnlyFileCountInSummary = ShouldReadOnlyFileCountBeDisplayedInSummary(arguments);
-			var sizeCalculator = new SizeCalculator(calculationMode, baseDirectory);
-			uint readOnlyFileCount;
-			var sizes = sizeCalculator.CalculateSizes(out readOnlyFileCount);
-			var sizeDisplayer = new ConsoleSizeDisplayer(shouldDisplayReadOnlyFileCountInSummary);
-			sizeDisplayer.DisplaySizes(sizes, readOnlyFileCount);
+			var baseDirectory = DetermineBaseDirectory(arguments);
+			var calculator = CreateSizeCalculatorFromArguments(arguments);
+			var summarizer = CreateSummarizerFromArguments(arguments);
+			displayer.ShowStatusMessage(calculator);
+			var calculationResult = summarizer != null ?
+			                                           	calculator.CalculateSizes(baseDirectory, summarizer) :
+			                                           	                                                     	calculator.CalculateSizes(baseDirectory);
+			displayer.DisplaySizes(calculationResult.Sizes);
+
+			if (summarizer != null)
+				displayer.DisplaySummary(calculationResult.ReadOnlyFileCount);
+		}
+
+		private static ISizeCalculator CreateSizeCalculatorFromArguments(IEnumerable<string> arguments)
+		{
+			var calculatorIdentifier = DetermineSelector(arguments, calculatorSwitch, defaultCalculator);
+
+			return ObjectFactory.CreateObjectMatchingAttribute<ISizeCalculator, SizeCalculatorAttribute>(
+				sizeCalculatorAttribute => sizeCalculatorAttribute.CommandLineIdentifier == calculatorIdentifier);
+		}
+
+		private static ISummarizer CreateSummarizerFromArguments(IEnumerable<string> arguments)
+		{
+			var summarizerIdentifier = DetermineSelector(arguments, summarizerSwitch, defaultSummarizer);
+			if (summarizerIdentifier == null)
+				return null;
+
+			return ObjectFactory.CreateObjectMatchingAttribute<ISummarizer, SummarizerAttribute>(
+				summarizer => summarizer.CommandLineIdentifier == summarizerIdentifier);
+		}
+
+		private static string DetermineSelector(IEnumerable<string> arguments, string commandLineSwitch, string defaultSelector)
+		{
+			var selector = defaultSelector;
+
+			foreach (var argument in arguments)
+			{
+				if (!argument.ToLower().StartsWith(commandLineSwitch))
+					continue;
+
+				selector = argument.Replace(commandLineSwitch, string.Empty);
+			}
+
+			return selector;
+		}
+
+		private static string DetermineBaseDirectory(IEnumerable<string> arguments)
+		{
+			var baseDirectory = Environment.CurrentDirectory;
+
+			foreach (var argument in arguments)
+			{
+				if (argument.StartsWith("/"))
+					continue;
+
+				if (Directory.Exists(argument))
+					return argument;
+
+				var subDirectory = Path.Combine(Environment.CurrentDirectory, argument);
+				if (Directory.Exists(subDirectory))
+					return subDirectory;
+			}
+
+			return baseDirectory;
 		}
 
 		private static void ShowUsage()
 		{
-			Console.WriteLine("Usage:  SizeInformationSummary <directory> [/filetype /showreadonly]");
-			Console.WriteLine("    /filetype      -  Show by file type instead of directory");
-			Console.WriteLine("    /showreadonly  -  Shows the number of files that are readonly");
+			Console.WriteLine(string.Format("Usage:  {0} [directory] [{1}<calculator>] [{2}<summarizer>]",
+			                                Assembly.GetExecutingAssembly().GetName().Name,
+			                                calculatorSwitch,
+			                                summarizerSwitch));
+			Console.WriteLine("    Calculators:");
+			Console.WriteLine(GetUsagesForAttributeType<SizeCalculatorAttribute>());
+			Console.WriteLine(string.Empty);
+			Console.WriteLine("    Summarizers:");
+			Console.WriteLine(GetUsagesForAttributeType<SummarizerAttribute>());
 		}
 
-		private static bool ShouldReadOnlyFileCountBeDisplayedInSummary(IEnumerable<string> arguments)
+		private static string GetUsagesForAttributeType<AttributeType>() where AttributeType : CommandLineIdentifierAttribute
 		{
-			foreach (var argument in arguments)
+			var usages = new StringBuilder();
+			foreach (var attributeInfo in AttributesRegistrar.FindAttributeInfo<AttributeType>())
 			{
-				if (argument == "/showreadonly")
-					return true;
+				var attribute = (CommandLineIdentifierAttribute) attributeInfo.Attribute;
+				usages.Append("    ");
+				usages.Append(attribute.CommandLineIdentifier);
+				usages.Append(":  ");
+				usages.Append(attribute.Description);
+				usages.Append(Environment.NewLine);
 			}
 
-			return false;
-		}
+			usages.Remove(usages.Length - Environment.NewLine.Length, Environment.NewLine.Length);
 
-		private static CalculationMode DetermineCalcuationMode(IEnumerable<string> consoleArguments)
-		{
-			foreach (var consoleArgument in consoleArguments)
-			{
-				if (consoleArgument == "/filetype")
-					return CalculationMode.ByFileType;
-			}
-
-			return CalculationMode.ByDirectorySize;
+			return usages.ToString();
 		}
 	}
 }

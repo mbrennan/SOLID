@@ -1,8 +1,8 @@
 namespace DirectorySizeCounter
 {
-	internal class SizeInformation
+	internal class SizeResult
 	{
-		public SizeInformation(string item, uint size)
+		public SizeResult(string item, uint size)
 		{
 			Item = item;
 			Size = size;
