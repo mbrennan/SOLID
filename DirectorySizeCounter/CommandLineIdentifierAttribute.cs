@@ -4,7 +4,7 @@ namespace DirectorySizeCounter
 {
 	internal class CommandLineIdentifierAttribute : Attribute
 	{
-		public CommandLineIdentifierAttribute(string commandLineIdentifier, string description)
+		protected CommandLineIdentifierAttribute(string commandLineIdentifier, string description)
 		{
 			CommandLineIdentifier = commandLineIdentifier;
 			Description = description;

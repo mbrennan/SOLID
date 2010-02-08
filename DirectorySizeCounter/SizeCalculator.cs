@@ -4,6 +4,7 @@ namespace DirectorySizeCounter
 {
 	internal abstract class SizeCalculator : ISizeCalculator
 	{
+		public abstract string StatusMessage { get; }
 		protected abstract IEnumerable<SizeResult> GetSizes(string baseDirectory, ISummarizer summarizer);
 
 		public CalculationResult CalculateSizes(string baseDirectory)
