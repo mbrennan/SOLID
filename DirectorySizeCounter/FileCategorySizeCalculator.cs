@@ -8,6 +8,15 @@ namespace DirectorySizeCounter
 	{
 		private const string commandLineIdentifier = "filecategory";
 		private const string description = "calculate by file category";
+		private const string statusMessage = "calcuting by file categories...";
+
+		public override string StatusMessage
+		{
+			get
+			{
+				return statusMessage;
+			}
+		}
 
 		protected override IEnumerable<SizeResult> GetSizes(string baseDirectory, ISummarizer summarizer)
 		{
