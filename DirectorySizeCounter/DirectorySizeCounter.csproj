@@ -46,9 +46,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CalculationMode.cs" />
+    <Compile Include="ConsoleSizeDisplayer.cs" />
     <Compile Include="DescendingComparer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SizeCalculator.cs" />
     <Compile Include="SizeInformation.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
