@@ -45,14 +45,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AttributeInfo.cs"/>
+    <Compile Include="AttributesRegistrar.cs" />
+    <Compile Include="CalculationResult.cs" />
+    <Compile Include="CommandLineIdentifierAttribute.cs" />
+    <Compile Include="ConsoleDisplayer.cs" />
     <None Include="CodePrinciples.cs" />
-    <Compile Include="CalculationMode.cs" />
-    <Compile Include="ConsoleSizeDisplayer.cs" />
     <Compile Include="DescendingComparer.cs" />
+    <Compile Include="DirectorySizeCalculator.cs" />
+    <Compile Include="FileCategorySizeCalculator.cs" />
+    <Compile Include="ISizeCalculator.cs" />
+    <Compile Include="ISummarizer.cs" />
+    <Compile Include="ObjectFactory.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ProxiedSummarizer.cs" />
+    <Compile Include="ReadOnlyFileSummarizer.cs" />
     <Compile Include="SizeCalculator.cs" />
-    <Compile Include="SizeInformation.cs" />
+    <Compile Include="SizeCalculatorAttribute.cs" />
+    <Compile Include="SizeResult.cs" />
+    <Compile Include="SummarizerAttribute.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
