@@ -16,8 +16,8 @@ namespace DirectorySizeCounter
 		{
 			var proxiedSummarizer = new ProxiedSummarizer(summarizer);
 			var sizes = GetSizes(baseDirectory, proxiedSummarizer);
-			var readOnlyFileCount = proxiedSummarizer.ReadOnlyFileCount;
-			var calculationResult = new CalculationResult(sizes, readOnlyFileCount);
+			var summary = proxiedSummarizer.Summary;
+			var calculationResult = new CalculationResult(sizes, summary);
 
 			return calculationResult;
 		}
