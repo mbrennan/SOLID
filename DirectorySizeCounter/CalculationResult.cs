@@ -4,10 +4,10 @@ namespace DirectorySizeCounter
 {
 	internal class CalculationResult
 	{
-		public CalculationResult(IEnumerable<SizeResult> sizeResults, uint readOnlyFileCount)
+		public CalculationResult(IEnumerable<SizeResult> sizeResults, string summary)
 		{
 			Sizes = sizeResults;
-			ReadOnlyFileCount = readOnlyFileCount;
+			Summary = summary;
 		}
 
 		public IEnumerable<SizeResult> Sizes
@@ -16,7 +16,7 @@ namespace DirectorySizeCounter
 			private set;
 		}
 
-		public uint ReadOnlyFileCount
+		public string Summary
 		{
 			get;
 			private set;

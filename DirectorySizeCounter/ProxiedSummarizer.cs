@@ -26,14 +26,11 @@ namespace DirectorySizeCounter
 			realSummarizer.ConsiderFile(file);
 		}
 
-		public uint ReadOnlyFileCount
+		public string Summary
 		{
 			get
 			{
-				if (!HasRealSummarizer)
-					return 0;
-
-				return realSummarizer.ReadOnlyFileCount;
+				return !HasRealSummarizer ? null : realSummarizer.Summary;
 			}
 		}
 	}

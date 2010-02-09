@@ -18,9 +18,12 @@ namespace DirectorySizeCounter
 			}
 		}
 
-		public void DisplaySummary(uint readOnlyFileCount)
+		public void DisplaySummary(string summary)
 		{
-			Console.WriteLine(string.Format("Read-only file count:  {0}", readOnlyFileCount));
+			if (summary == null)
+				return;
+
+			Console.WriteLine(summary);
 		}
 
 		public void ShowStatusMessage(ISizeCalculator calculator)
