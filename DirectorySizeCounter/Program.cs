@@ -6,7 +6,7 @@ using System.Text;
 
 namespace DirectorySizeCounter
 {
-	internal static class Program
+	internal class Program
 	{
 		private const string calculatorSwitch = "/calculator:";
 		private const string summarizerSwitch = "/summarizer:";
@@ -31,9 +31,7 @@ namespace DirectorySizeCounter
 			    calculator.CalculateSizes(baseDirectory);
 
 			displayer.DisplaySizes(calculationResult.Sizes);
-
-			if (summarizer != null)
-				displayer.DisplaySummary(calculationResult.ReadOnlyFileCount);
+			displayer.DisplaySummary(calculationResult.Summary);
 		}
 
 		private static ISizeCalculator CreateSizeCalculatorFromArguments(IEnumerable<string> arguments)

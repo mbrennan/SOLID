@@ -6,7 +6,7 @@ namespace DirectorySizeCounter
 	{
 		void ConsiderFile(FileInfo file);
 
-		uint ReadOnlyFileCount
+		string Summary
 		{
 			get;
 		}
