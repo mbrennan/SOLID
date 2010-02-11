@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace DirectorySizeCounter
+namespace DirectorySizeCounter.Core
 {
 	[Summarizer(commandLineIdentifier, description)]
 	internal class ReadOnlyFileSummarizer : ISummarizer

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace DirectorySizeCounter
+namespace DirectorySizeCounter.Core
 {
 	internal abstract class SizeCalculator : ISizeCalculator
 	{

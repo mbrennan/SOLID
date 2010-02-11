@@ -1,6 +1,6 @@
-namespace DirectorySizeCounter
+namespace DirectorySizeCounter.Core
 {
-	internal interface ISizeCalculator
+	public interface ISizeCalculator
 	{
 		CalculationResult CalculateSizes(string baseDirectory);
 		CalculationResult CalculateSizes(string baseDirectory, ISummarizer summarizer);
