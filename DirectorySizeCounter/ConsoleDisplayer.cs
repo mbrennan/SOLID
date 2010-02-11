@@ -1,13 +1,14 @@
 using System;
 using System.Collections.Generic;
+using DirectorySizeCounter.Core;
 
 namespace DirectorySizeCounter
 {
-	internal class ConsoleDisplayer
+	internal static class ConsoleDisplayer
 	{
 		private const uint maximumItemsToDisplay = 10;
 
-		public void DisplaySizes(IEnumerable<SizeResult> sizes)
+		public static void DisplaySizes(IEnumerable<SizeResult> sizes)
 		{
 			var enumerator = sizes.GetEnumerator();
 			var itemsDisplayed = 0;
@@ -18,7 +19,7 @@ namespace DirectorySizeCounter
 			}
 		}
 
-		public void DisplaySummary(string summary)
+		public static void DisplaySummary(string summary)
 		{
 			if (summary == null)
 				return;
@@ -26,7 +27,7 @@ namespace DirectorySizeCounter
 			Console.WriteLine(summary);
 		}
 
-		public void ShowStatusMessage(ISizeCalculator calculator)
+		public static void ShowStatusMessage(ISizeCalculator calculator)
 		{
 			Console.WriteLine(calculator.StatusMessage);
 		}

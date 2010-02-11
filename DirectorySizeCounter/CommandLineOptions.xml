@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<CommandLineOptions>
+	<Calculators default="directorysize">
+		<Calculator name="directorysize" type="DirectorySizeCounter.Core.DirectorySizeCalculator" description="calculate by directory size"/>
+		<Calculator name="filecategory" type="DirectorySizeCounter.Core.FileCategoryCalculator" description="calculate by file category"/>
+	</Calculators>
+
+	<Summarizers>
+		<Summarizer name="readonly" type="DirectorySizeCounter.Core.ReadOnlyFileSummarizer" description="display total # of readonly files"/>
+	</Summarizers>
+</CommandLineOptions>

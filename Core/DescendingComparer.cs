@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace DirectorySizeCounter
+namespace DirectorySizeCounter.Core
 {
 	internal class DescendingComparer<T> : IComparer<T> where T : IComparable<T>
 	{

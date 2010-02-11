@@ -1,4 +1,4 @@
-namespace DirectorySizeCounter
+namespace DirectorySizeCounter.Core
 {
 	internal class SummarizerAttribute : CommandLineIdentifierAttribute
 	{

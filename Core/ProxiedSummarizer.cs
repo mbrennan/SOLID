@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace DirectorySizeCounter
+namespace DirectorySizeCounter.Core
 {
 	internal class ProxiedSummarizer : ISummarizer
 	{
