@@ -1,8 +1,8 @@
 using System.IO;
 
-namespace DirectorySizeCounter
+namespace DirectorySizeCounter.Core
 {
-	internal interface ISummarizer
+	public interface ISummarizer
 	{
 		void ConsiderFile(FileInfo file);
 

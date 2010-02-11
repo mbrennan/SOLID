@@ -1,6 +1,6 @@
-namespace DirectorySizeCounter
+namespace DirectorySizeCounter.Core
 {
-	internal class SizeResult
+	public class SizeResult
 	{
 		public SizeResult(string item, uint size)
 		{

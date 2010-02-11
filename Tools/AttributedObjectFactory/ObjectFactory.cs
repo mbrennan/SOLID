@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace DirectorySizeCounter
+namespace Tools.AttributedObjectFactory
 {
-	internal static class ObjectFactory
+	public static class ObjectFactory
 	{
 		public static ObjectType CreateObjectMatchingAttribute<ObjectType, AttributeType>(Predicate<AttributeType> attributeMatcher, params object[] constructorParameters) where AttributeType : Attribute
 		{

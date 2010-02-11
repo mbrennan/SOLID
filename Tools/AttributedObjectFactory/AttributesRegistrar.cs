@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace DirectorySizeCounter
+namespace Tools.AttributedObjectFactory
 {
 	internal static class AttributesRegistrar
 	{

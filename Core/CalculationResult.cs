@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 
-namespace DirectorySizeCounter
+namespace DirectorySizeCounter.Core
 {
-	internal class CalculationResult
+	public class CalculationResult
 	{
 		public CalculationResult(IEnumerable<SizeResult> sizeResults, string summary)
 		{

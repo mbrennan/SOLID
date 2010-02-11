@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 
-namespace DirectorySizeCounter
+namespace DirectorySizeCounter.Core
 {
 	[SizeCalculator(commandLineIdentifier, description)]
 	internal class FileCategorySizeCalculator : SizeCalculator

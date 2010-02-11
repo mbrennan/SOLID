@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DirectorySizeCounter", "DirectorySizeCounter\DirectorySizeCounter.csproj", "{4CBD1A5E-43A7-47E0-87DC-00E0621414E7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DirectorySizeCounter.Core", "Core\DirectorySizeCounter.Core.csproj", "{F094E58A-10C3-4E8B-9A36-328DDC6A6934}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,6 +15,10 @@ Global
 		{4CBD1A5E-43A7-47E0-87DC-00E0621414E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4CBD1A5E-43A7-47E0-87DC-00E0621414E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4CBD1A5E-43A7-47E0-87DC-00E0621414E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F094E58A-10C3-4E8B-9A36-328DDC6A6934}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F094E58A-10C3-4E8B-9A36-328DDC6A6934}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F094E58A-10C3-4E8B-9A36-328DDC6A6934}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F094E58A-10C3-4E8B-9A36-328DDC6A6934}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
