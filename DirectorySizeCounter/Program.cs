@@ -1,27 +1,37 @@
 ﻿using System;
+<<<<<<< HEAD
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Text;
+=======
+using DirectorySizeCounter.Core;
+>>>>>>> Refactor to remove DIP violations
 
 namespace DirectorySizeCounter
 {
 	internal class Program
 	{
+<<<<<<< HEAD
 		private const string calculatorSwitch = "/calculator:";
 		private const string summarizerSwitch = "/summarizer:";
 		private const string defaultCalculator = DirectorySizeCalculator.CommandLineIdentifier;
 		private const string defaultSummarizer = null; // no default summarizer type
 		private static readonly ConsoleDisplayer displayer = new ConsoleDisplayer();
+=======
+>>>>>>> Refactor to remove DIP violations
 
 		private static void Main(string[] arguments)
 		{
+			var commandLineArguments = new CommandLineArguments(arguments);
+
 			if (arguments.Length == 0 || arguments.Length > 3)
 			{
-				ShowUsage();
+				CommandLineArguments.ShowUsage();
 				return;
 			}
 
+<<<<<<< HEAD
 			var baseDirectory = DetermineBaseDirectory(arguments);
 			var calculator = CreateSizeCalculatorFromArguments(arguments);
 			var summarizer = CreateSummarizerFromArguments(arguments);
@@ -117,5 +127,24 @@ namespace DirectorySizeCounter
 
 			return usages.ToString();
 		}
+=======
+			var calculator = CreateObjectFromType<ISizeCalculator>(commandLineArguments.SizeCalculatorType);
+			var summarizer = commandLineArguments.SummarizerType == null ? null :
+							 CreateObjectFromType<ISummarizer>(commandLineArguments.SummarizerType);
+			ConsoleDisplayer.ShowStatusMessage(calculator);
+			var calculationResult = summarizer != null ?
+			    calculator.CalculateSizes(commandLineArguments.BaseDirectory, summarizer) :
+			    calculator.CalculateSizes(commandLineArguments.BaseDirectory);
+			ConsoleDisplayer.DisplaySizes(calculationResult.Sizes);
+			ConsoleDisplayer.DisplaySummary(calculationResult.Summary);
+		}
+
+		private static TypeName CreateObjectFromType<TypeName>(string typeName)
+		{
+			var type = Type.GetType(typeName);
+			var constructor = type.GetConstructor(new Type[]{});
+			return (TypeName) constructor.Invoke(new object[]{});
+		}
+>>>>>>> Refactor to remove DIP violations
 	}
 }
