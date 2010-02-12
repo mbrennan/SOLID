@@ -55,9 +55,7 @@
     <Compile Include="ProxiedSummarizer.cs" />
     <Compile Include="ReadOnlyFileSummarizer.cs" />
     <Compile Include="SizeCalculator.cs" />
-    <Compile Include="SizeCalculatorAttribute.cs" />
     <Compile Include="SizeResult.cs" />
-    <Compile Include="SummarizerAttribute.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

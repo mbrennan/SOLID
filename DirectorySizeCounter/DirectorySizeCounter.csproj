@@ -45,25 +45,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AttributeInfo.cs"/>
-    <Compile Include="AttributesRegistrar.cs" />
-    <Compile Include="CalculationResult.cs" />
-    <Compile Include="CommandLineIdentifierAttribute.cs" />
+    <Compile Include="CommandLineArguments.cs" />
     <Compile Include="CommandLineOption.cs" />
     <Compile Include="CommandLineOptions.cs" />
     <Compile Include="ConsoleDisplayer.cs" />
     <None Include="CodePrinciples.cs" />
-    <Compile Include="DescendingComparer.cs" />
-    <Compile Include="DirectorySizeCalculator.cs" />
-    <Compile Include="FileCategorySizeCalculator.cs" />
-    <Compile Include="ISizeCalculator.cs" />
-    <Compile Include="ISummarizer.cs" />
-    <Compile Include="ObjectFactory.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="CommandLineOptions.xml" />
+    <Content Include="CommandLineOptions.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\DirectorySizeCounter.Core.csproj">

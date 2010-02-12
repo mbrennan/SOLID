@@ -3,12 +3,9 @@ using System.IO;
 
 namespace DirectorySizeCounter.Core
 {
-	[SizeCalculator(CommandLineIdentifier, Description)]
 	internal class DirectorySizeCalculator : SizeCalculator
 	{
-		public const string CommandLineIdentifier = "directorysize";
 		private const string statusMessage = "calculating directory sizes...";
-		private const string Description = "calculate by directory size";
 
 		public override string StatusMessage
 		{
