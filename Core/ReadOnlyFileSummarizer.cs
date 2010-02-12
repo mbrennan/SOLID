@@ -2,12 +2,9 @@
 
 namespace DirectorySizeCounter.Core
 {
-	[Summarizer(commandLineIdentifier, description)]
 	internal class ReadOnlyFileSummarizer : ISummarizer
 	{
 		private uint readOnlyFileCount;
-		private const string commandLineIdentifier = "readonly";
-		private const string description = "display total # of readonly files";
 
 		public void ConsiderFile(FileInfo file)
 		{

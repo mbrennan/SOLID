@@ -45,7 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CommandLineIdentifierAttribute.cs" />
+    <Compile Include="CommandLineArguments.cs" />
     <Compile Include="CommandLineOption.cs" />
     <Compile Include="CommandLineOptions.cs" />
     <Compile Include="ConsoleDisplayer.cs" />
@@ -53,7 +53,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="CommandLineOptions.xml" />
+    <Content Include="CommandLineOptions.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\DirectorySizeCounter.Core.csproj">
