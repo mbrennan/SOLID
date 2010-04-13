@@ -84,13 +84,7 @@ namespace DirectorySizeCounter
 		private static IEnumerable<SizeInformation> CalculateSizesByFileCategory(string baseDirectory)
 		{
 			var categorySizes = new Dictionary<string, uint>();
-			var directoriesToAnalyze = new List<string> { baseDirectory };
-			directoriesToAnalyze.AddRange(Directory.GetDirectories(baseDirectory));
-
-			foreach (var subDirectory in directoriesToAnalyze)
-			{
-				GetSizeInformationByFileCategory(subDirectory, categorySizes);
-			}
+			GetSizeInformationByFileCategory(baseDirectory, categorySizes);
 
 			var sortedFileCategorySizes = SortFileCategorySizes(categorySizes);
 
