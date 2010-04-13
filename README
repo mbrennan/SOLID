@@ -1,18 +1,19 @@
-This repository contains my source code for my presentation entitled "Code Design & the SOLID Principles."  It goes each of the components of Robert C. Martin's SOLID principles to refactor the code into a better version of itself.
+This repository contains the source code for the basis of my presentation entitled "Code Design & the SOLID Principles."  It is structured in a way to easily allow progression through each principle, refactoring the source base along the way into a better version of itself.
 
-Because I didn't want to teach TDD/BDD too, and because I'm intending to use this presentation as the basis for a TDD/BDD presentation, there are no tests included within the project.
+Because I didn't want to teach TDD/BDD in this session, and because I'm intending to use this presentation as the basis for a future TDD/BDD presentation, there is no test suite included within the project.
 
-The example code represents a command line directory size counter.  It can report the top 10 largest directories (recursively) within a base directory, or the top 10 largest file types (recursively) within a directory.
+The example code represents a command line directory size counter.  It can report the top 10 largest directories, recursively, within a base directory; or the top 10 largest file types, recursively within a directory.
 
-There are several tags in the repository to make navigation within the presentation simple, and to illustrate the changes between one principle to the next:
+There are several branches in the repository to make navigation within the presentation simple, and to illustrate the changes between one principle to the next:
 
-Tags:
-SRP1 - Cleans up variable names, moves code into seperate methods, adds guard clauses
-SRP2 - Moves code into seperate classes to further adhere to SRP
-OCP  - Makes the code easier to add different type of size calculators or summarizers
-LSP  - Removes the violation of LSP in ConsoleDisplayer
-ISP  - Removes the violation of ISP in ISummarizer
-D    - (doesn't exist yet, in progress)
+Branches:
+initial_code - Represents the initial, extremely messed up version of the source base
+SRP1         - Cleans up variable names, moves code into seperate methods, adds guard clauses
+SRP2         - Moves code into seperate classes to further adhere to SRP
+OCP          - Makes the code easier to add different types of size calculators or summarizers
+LSP          - Removes the violation of LSP in ConsoleDisplayer
+ISP          - Removes the violation of ISP in ISummarizer
+DIP          - Splits business logic into separate library; removes dependency in calculators on console switches
 
 For a refresher, the SOLID principles state the following:
 
@@ -32,3 +33,4 @@ D - Dependency Inversion Principle (DIP)
 Higher-level modules should not depend upon lower level modules; both should depend upon abstractions
 Abstractions should not depend upon details; details should depend upon abstractions
 
+Please see http://butunclebob.com/ArticleS.UncleBob.PrinciplesOfOod for more information on the SOLID principles.
