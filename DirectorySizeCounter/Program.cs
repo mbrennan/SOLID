@@ -5,7 +5,6 @@ namespace DirectorySizeCounter
 {
 	internal class Program
 	{
-
 		private static void Main(string[] arguments)
 		{
 			var commandLineArguments = new CommandLineArguments(arguments);

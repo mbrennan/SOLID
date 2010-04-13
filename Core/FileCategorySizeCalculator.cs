@@ -18,13 +18,7 @@ namespace DirectorySizeCounter.Core
 		protected override IEnumerable<SizeResult> GetSizes(string baseDirectory, ISummarizer summarizer)
 		{
 			var categorySizes = new Dictionary<string, uint>();
-			var directoriesToAnalyze = new List<string> { baseDirectory };
-			directoriesToAnalyze.AddRange(Directory.GetDirectories(baseDirectory));
-
-			foreach (var subDirectory in directoriesToAnalyze)
-			{
-				GetSizeInformationByFileCategory(subDirectory, categorySizes, summarizer);
-			}
+			GetSizeInformationByFileCategory(baseDirectory, categorySizes, summarizer);
 
 			var sortedFileCategorySizes = SortFileCategorySizes(categorySizes);
 
